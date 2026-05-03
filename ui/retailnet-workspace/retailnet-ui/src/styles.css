@@ -1,0 +1,195 @@
+/* Global App Theme Definitions */
+
+:root {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  /* Fallback Defaults (Standard Professional Light) */
+  --app-bg: #f8fafc;        /* Slate 50 */
+  --panel-bg: #ffffff;      /* Pure White */
+  --panel-border: #e2e8f0;  /* Slate 200 */
+  --text-main: #1e293b;     /* Slate 800 */
+  --text-muted: #64748b;    /* Slate 500 */
+  
+  --primary: #0284c7;       /* Professional Blue */
+  --primary-glow: #e0f2fe;  /* Very light blue bg */
+  --primary-gradient: #0284c7; /* Solid for button backgrounds */
+  --secondary: #38bdf8;
+  
+  --warning: #d97706;       /* Amber 600 */
+  --warning-glow: #fef3c7;
+  --warning-gradient: #d97706;
+  
+  --success: #059669;       /* Emerald 600 */
+  --success-glow: #d1fae5;
+  --success-gradient: #059669;
+  
+  --danger: #dc2626;        /* Red 600 */
+  --danger-glow: #fee2e2;
+}
+
+/* ------------------------------------- */
+/* ROLE THEMES OVERRIDES                 */
+/* ------------------------------------- */
+
+/* 1. Inventory Manager Theme (Professional Blue) */
+.theme-inventory-manager {
+  --app-bg: #f8fafc;
+  --panel-bg: #ffffff;
+  --primary: #0284c7;
+  --primary-glow: #e0f2fe;
+  --primary-gradient: #0284c7;
+  --secondary: #38bdf8;
+}
+
+/* 2. Procurement Theme (Professional Emerald) */
+.theme-procurement-team {
+  --app-bg: #f8fafc; 
+  --panel-bg: #ffffff;
+  --primary: #059669; 
+  --primary-glow: #d1fae5;
+  --primary-gradient: #059669;
+  --secondary: #34d399;
+}
+
+/* 3. Sales Theme (Professional Purple/Indigo) */
+.theme-sales-team {
+  --app-bg: #f8fafc;
+  --panel-bg: #ffffff;
+  --primary: #4f46e5; /* Indigo 600 */
+  --primary-glow: #e0e7ff;
+  --primary-gradient: #4f46e5;
+  --secondary: #818cf8;
+}
+
+/* Global Reset Utilities */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--app-bg);
+  color: var(--text-main);
+  transition: background-color 0.4s ease;
+}
+
+/* Professional Panel Base */
+.global-glass-panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  color: var(--text-main);
+  transition: all 0.2s ease;
+}
+
+/* Global Button Base */
+.btn-cyber-primary {
+  background: var(--primary-gradient);
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: capitalize;
+}
+
+.btn-cyber-primary:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+.btn-cyber-warning {
+  background: var(--warning-gradient);
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-transform: capitalize;
+}
+.btn-cyber-warning:hover { transform: translateY(-1px); filter: brightness(1.1); }
+
+.btn-cyber-success {
+  background: var(--success);
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-transform: capitalize;
+}
+.btn-cyber-success:hover { transform: translateY(-1px); filter: brightness(1.1); }
+
+/* Premium Cyber-Secondary Button - Aligned with Theme */
+.btn-cyber-secondary {
+  background: var(--primary-glow);
+  backdrop-filter: blur(4px);
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-transform: capitalize;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.btn-cyber-secondary:hover {
+  background: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 4px 15px var(--primary-glow);
+  transform: translateY(-2px);
+}
+
+.btn-cyber-secondary .material-icons {
+  font-size: 18px;
+  transition: transform 0.6s ease;
+}
+
+.btn-cyber-secondary:hover .material-icons {
+  transform: rotate(360deg);
+}
+
+.btn-cyber-secondary:active {
+  transform: translateY(0);
+}
+/* Responsive Utilities */
+.responsive-table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-card {
+  min-width: 600px; /* Ensures table has enough space even when container scrolls */
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .global-glass-panel {
+    padding: 16px;
+  }
+}

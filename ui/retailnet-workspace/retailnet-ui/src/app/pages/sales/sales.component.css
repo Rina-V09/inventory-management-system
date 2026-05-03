@@ -1,0 +1,249 @@
+/* --- Dashboard Container Layout --- */
+.sales-container {
+    padding: 30px;
+    background-color: transparent;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  
+  /* --- Header Section --- */
+  .content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+  }
+  
+  .title-section h2 {
+    font-weight: 800;
+    color: var(--text-main);
+    font-size: 1.8rem;
+    margin: 0;
+  }
+  
+  .title-section .current-date {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-top: 6px;
+    font-weight: 500;
+  }
+  
+  /* Header Buttons */
+  .header-actions {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .btn-outline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,0,0,0.03);
+    border: 1px solid var(--panel-border);
+    padding: 12px 20px;
+    border-radius: 12px;
+    color: var(--text-main);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .btn-outline:hover {
+    background: rgba(0,0,0,0.05);
+    transform: translateY(-1px);
+  }
+  
+  .btn-primary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--primary-gradient);
+    color: #000;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px var(--primary-glow);
+  }
+  
+  /* --- Stat Cards Section --- */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+  }
+  
+  .stat-card {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    padding: 26px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-6px);
+  }
+  
+  .icon-wrapper {
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Card Specific Themes */
+  .rev-bg { background: var(--success-glow); color: var(--success); }
+  .ord-bg { background: var(--primary-glow); color: var(--primary); }
+  .cus-bg { background: var(--warning-glow); color: var(--warning); }
+  
+  .stat-info .label {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  
+  .stat-info h3 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin: 0;
+    letter-spacing: -0.5px;
+  }
+  
+  /* --- Tables --- */
+  .table-card {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  }
+  
+  .table-card h4 {
+    margin: 0 0 20px 0;
+    font-weight: 700;
+    color: var(--text-main);
+    font-size: 1.2rem;
+    border-bottom: 2px solid var(--panel-border);
+    padding-bottom: 15px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 12px;
+  }
+  
+  th {
+    text-align: left;
+    padding: 10px 15px;
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+  
+  td {
+    padding: 16px 15px;
+    background-color: rgba(0,0,0,0.03);
+    border-top: 1px solid var(--panel-border);
+    border-bottom: 1px solid var(--panel-border);
+    color: var(--text-main);
+    font-size: 0.95rem;
+  }
+  
+  td:first-child { 
+    border-left: 1px solid var(--panel-border); 
+    border-radius: 12px 0 0 12px; 
+  }
+  td:last-child { 
+    border-right: 1px solid var(--panel-border); 
+    border-radius: 0 12px 12px 0; 
+  }
+  
+  /* Badges */
+  .badge {
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    display: inline-block;
+  }
+  
+  .badge-success { background: var(--success-glow); color: var(--success); }
+  
+  .chart-card {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 30px;
+  }
+
+  .chart-card h4 {
+    margin: 0 0 12px 0;
+    color: var(--text-main);
+    font-weight: 700;
+  }
+
+  .chart-hint {
+    margin: 0 0 16px 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+  
+  .chart-container {
+    height: 300px;
+    position: relative;
+  }
+  
+  .card-header h4 {
+    margin: 0 0 15px 0;
+    color: var(--text-main);
+    font-weight: 700;
+  }
+
+/* --- Responsive Scaling --- */
+@media (max-width: 992px) {
+  .sales-container {
+    padding: 15px;
+  }
+  
+  .content-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .header-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+  
+  .btn-outline, .btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+}

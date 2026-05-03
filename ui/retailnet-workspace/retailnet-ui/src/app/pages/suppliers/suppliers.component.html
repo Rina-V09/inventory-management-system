@@ -1,0 +1,193 @@
+<div class="suppliers-container">
+  <header class="content-header">
+    <div class="title-section">
+      <h2>Supplier Directory</h2>
+      <p class="subtitle">Manage vendor relationships and contact information</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-primary" (click)="openAddModal()">
+        <span class="material-icons">add</span> Add New Supplier
+      </button>
+    </div>
+  </header>
+
+  <div class="table-card">
+    @if (isLoading) {
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Loading suppliers...</p>
+      </div>
+    } @else {
+      @if (suppliers.length > 0) {
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Supplier Name</th>
+              <th>Category</th>
+              <th>Contact Email</th>
+              <th>Rating</th>
+              <th style="text-align: right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (supplier of suppliers; track supplier.supplierId) {
+              <tr>
+                <td><span class="supplier-id">#{{ supplier.supplierId }}</span></td>
+                <td class="supplier-name">{{ supplier.supplierName }}</td>
+                <td><span class="category-tag">{{ supplier.category }}</span></td>
+                <td class="supplier-contact">{{ supplier.contactEmail }}</td>
+                <td>
+                  <div class="rating-badge" [attr.data-rating]="supplier.rating">
+                    <span class="material-icons star">stars</span>
+                    {{ supplier.rating }}
+                  </div>
+                </td>
+                <td style="text-align: right;">
+                  <button class="icon-btn edit" (click)="openEditModal(supplier)" title="Edit Supplier">
+                    <span class="material-icons">edit</span>
+                  </button>
+                  <button class="icon-btn delete" (click)="openDeleteModal(supplier.supplierId)" title="Delete Supplier">
+                    <span class="material-icons">delete_outline</span>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      } @else {
+        <div class="empty-state">
+          <span class="material-icons">storefront</span>
+          <p>No suppliers registered yet.</p>
+        </div>
+      }
+    }
+  </div>
+
+  @if (showAddModal || showEditModal) {
+    <div class="modal-overlay" (click)="showAddModal = false; showEditModal = false;">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <header class="modal-header">
+          <h3>{{ showEditModal ? 'Update Supplier' : 'Add New Supplier' }}</h3>
+          <button class="close-btn" (click)="showAddModal = false; showEditModal = false;">&times;</button>
+        </header>
+        
+        <form (ngSubmit)="showEditModal ? updateSupplier() : saveSupplier()" #supplierForm="ngForm" novalidate>
+          <div class="form-group">
+            <label>Vendor Name</label>
+            <input
+              type="text"
+              name="supplierName"
+              [(ngModel)]="currentSupplier.supplierName"
+              #supplierNameRef="ngModel"
+              required
+              minlength="2"
+              maxlength="100"
+              placeholder="Vendor Name"
+              [class.input-invalid]="supplierNameRef.invalid && supplierNameRef.touched"
+            >
+            @if (supplierNameRef.touched && supplierNameRef.errors?.['required']) {
+              <p class="field-error">Vendor name is required.</p>
+            }
+            @if (supplierNameRef.touched && (supplierNameRef.errors?.['minlength'] || supplierNameRef.errors?.['maxlength'])) {
+              <p class="field-error">Name must be 2–100 characters.</p>
+            }
+          </div>
+          
+          <div class="form-group">
+            <label>Contact Email</label>
+            <input
+              type="email"
+              name="contactEmail"
+              [(ngModel)]="currentSupplier.contactEmail"
+              #contactEmailRef="ngModel"
+              required
+              maxlength="100"
+              placeholder="contact@domain.com"
+              [class.input-invalid]="contactEmailRef.invalid && contactEmailRef.touched"
+            >
+            @if (contactEmailRef.touched && (contactEmailRef.errors?.['required'] || contactEmailRef.errors?.['email'])) {
+              <p class="field-error">Valid contact email is required.</p>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>Category</label>
+            <input
+              type="text"
+              name="category"
+              [(ngModel)]="currentSupplier.category"
+              #categoryRef="ngModel"
+              required
+              minlength="2"
+              maxlength="100"
+              placeholder="e.g. Electronics"
+              [class.input-invalid]="categoryRef.invalid && categoryRef.touched"
+            >
+            @if (categoryRef.touched && categoryRef.errors?.['required']) {
+              <p class="field-error">Category is required.</p>
+            }
+            @if (categoryRef.touched && (categoryRef.errors?.['minlength'] || categoryRef.errors?.['maxlength'])) {
+              <p class="field-error">Category must be 2–100 characters.</p>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>Lead time (days)</label>
+            <input
+              type="number"
+              name="leadTimeDays"
+              [(ngModel)]="currentSupplier.leadTimeDays"
+              #leadRef="ngModel"
+              required
+              min="1"
+              max="365"
+              step="1"
+              [class.input-invalid]="leadRef.invalid && leadRef.touched"
+            >
+            @if (leadRef.touched && leadRef.errors) {
+              <p class="field-error">Enter a whole number of days between 1 and 365.</p>
+            }
+          </div>
+          
+          <div class="form-group">
+            <label>Rating Level</label>
+            <select
+              name="rating"
+              [(ngModel)]="currentSupplier.rating"
+              #ratingRef="ngModel"
+              required
+            >
+              <option value="EXCELLENT">Excellent</option>
+              <option value="GOOD">Good</option>
+              <option value="AVERAGE">Average</option>
+              <option value="POOR">Poor</option>
+            </select>
+          </div>
+          
+          <div class="modal-footer">
+            <button type="button" class="btn-secondary" (click)="showAddModal = false; showEditModal = false;">Cancel</button>
+            <button type="submit" class="btn-primary" [disabled]="!supplierForm.form.valid || isSaving">
+              {{ isSaving ? (showEditModal ? 'Updating...' : 'Creating...') : (showEditModal ? 'Update Supplier' : 'Create Supplier') }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  @if (showDeleteModal) {
+    <div class="modal-overlay" (click)="showDeleteModal = false">
+      <div class="modal-content delete-confirm" (click)="$event.stopPropagation()">
+        <h3 class="danger-title"><span class="material-icons">warning</span> Confirm Deletion</h3>
+        <p>Are you sure you want to remove this supplier? This action cannot be undone.</p>
+        <div class="confirm-actions">
+          <button class="btn-secondary" (click)="showDeleteModal = false">No, Keep</button>
+          <button class="btn-danger" (click)="confirmDelete()" [disabled]="isDeleting">
+            {{ isDeleting ? 'Removing...' : 'Yes, Delete Supplier' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

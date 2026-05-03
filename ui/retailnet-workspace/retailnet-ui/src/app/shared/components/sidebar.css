@@ -1,0 +1,102 @@
+:host {
+  display: block;
+  background-color: var(--panel-bg);
+  width: 260px;
+  height: 100vh;
+  padding: 24px 20px;
+  box-sizing: border-box;
+  border-right: 1px solid var(--panel-border);
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.02);
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0 0 2rem 0;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--panel-border);
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 12px;
+  border-left: 3px solid transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+nav a:hover {
+  background-color: var(--panel-hover);
+  color: var(--text-main);
+  transform: translateX(4px);
+}
+
+nav a.active {
+  background-color: var(--primary-glow);
+  color: var(--primary);
+  border-left-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
+}
+
+.material-icons {
+  font-size: 22px;
+  transition: transform 0.3s ease;
+}
+
+nav a:hover .material-icons {
+  transform: scale(1.1);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 2rem;
+  border-top: 1px solid var(--panel-border);
+}
+
+.logout-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: #f8fafc;
+  border: 1px solid var(--panel-border);
+  color: #64748b;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #fef2f2;
+  color: var(--danger);
+  border-color: #fee2e2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.05);
+}

@@ -1,0 +1,403 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.page-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* 💠 FUTURISTIC WAREHOUSE BACKGROUND */
+.bg-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('file:///Users/ent-0521/.gemini/antigravity/brain/f063ab4c-0649-4e36-8b54-61e041d96a82/retail_inventory_hero_bg_1774722404814.png');
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+.bg-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(15, 23, 42, 0.4) 0%, rgba(15, 23, 42, 0.9) 100%);
+  z-index: 1;
+}
+
+/* 📟 CYBER-GLASS CARD */
+.login-card {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 400px; /* Further reduced from 420px */
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 20px; /* More compact radius */
+  padding: 2.5rem; /* Further reduced from 2.5rem */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  animation: cardEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.shadow-cyber {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* 🔖 BRAND LOGO & TAGS */
+.brand-section {
+  text-align: center;
+  margin-bottom: 2rem; /* Reduced from 3rem */
+}
+
+.logo-circle {
+  width: 56px; /* Reduced from 72px */
+  height: 56px; /* Reduced from 72px */
+  background: var(--primary);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem; /* Reduced from 1.5rem */
+  transition: transform 0.4s ease;
+}
+
+.logo-circle:hover {
+  transform: scale(1.05);
+}
+
+.logo-circle .material-icons {
+  font-size: 28px; /* Reduced from 36px */
+  color: #fff;
+}
+
+.glow-cyan {
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.brand-title {
+  font-size: 1.75rem; /* Reduced from 2.25rem */
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: #1e293b;
+}
+
+.brand-tagline {
+  color: #64748b;
+  font-size: 0.8rem; /* Reduced from 0.875rem */
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+}
+
+/* 🎯 AUTH HEADERS */
+.auth-header {
+  font-size: 1.25rem; /* Reduced from 1.75rem */
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.25rem;
+}
+
+.auth-subheader {
+  color: #64748b;
+  font-size: 0.9rem; /* Reduced from 1rem */
+  margin-bottom: 2rem; /* Reduced from 2.5rem */
+}
+
+/* ⌨️ INPUT STYLING (A++ CONTRAST) */
+.field-container {
+  margin-bottom: 1.25rem; /* Reduced from 1.75rem */
+}
+
+.field-container label {
+  display: block;
+  font-size: 0.75rem; /* Slightly smaller */
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.input-glow-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.prefix-icon {
+  position: absolute;
+  left: 14px;
+  color: #94a3b8;
+  font-size: 1.125rem; /* Slightly smaller */
+  z-index: 2;
+}
+
+.input-glow-wrapper input {
+  width: 100%;
+  padding: 0.875rem 0.875rem 0.875rem 2.75rem; /* More compact padding */
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px; /* More compact radius */
+  color: #1e293b;
+  font-size: 0.95rem; /* Slightly smaller */
+  font-weight: 500;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.input-glow-wrapper input::placeholder {
+  color: #94a3b8;
+}
+
+.input-glow-wrapper input:focus {
+  outline: none;
+  background: #ffffff;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+/* 👁️ PASSWORD TOGGLE */
+.visibility-toggle {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, background 0.2s;
+}
+
+.visibility-toggle:hover {
+  color: #1e293b;
+  background: #f1f5f9;
+}
+
+.input-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+/* ⚡ BUTTONS (CYBER STYLE) */
+.btn-cyber-primary {
+  width: 100%;
+  padding: 0.875rem; /* Reduced from 1.125rem */
+  background: var(--primary);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+}
+
+.btn-cyber-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.btn-cyber-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  filter: grayscale(1);
+}
+
+.btn-google-cyber {
+  width: 100%;
+  padding: 0.75rem; /* Reduced from 1rem */
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  border-radius: 12px;
+  color: #0f172a;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-google-cyber img {
+  width: 20px;
+}
+
+.btn-google-cyber:hover {
+  background: #fff;
+  transform: translateY(-1px);
+}
+
+/* 🔐 OPTIONS & LINKS */
+.auth-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem; /* Reduced from 2rem */
+}
+
+.cyber-link {
+  color: #3b82f6;
+  font-size: 0.8125rem;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.cyber-link:hover {
+  color: #06b6d4;
+  text-decoration: underline;
+}
+
+.nexus-footer {
+  margin-top: 1.5rem; /* Reduced from 2.5rem */
+  text-align: center;
+  color: #64748b;
+  font-size: 0.8125rem; /* Slightly smaller */
+}
+
+.nexus-link {
+  color: #1e293b;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--primary);
+  text-underline-offset: 4px;
+}
+
+.nexus-link:hover {
+  color: var(--primary);
+}
+
+.nexus-separator {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0; /* Reduced from 2.5rem */
+  color: #475569;
+  font-size: 0.75rem; /* Reduced from 0.875rem */
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.nexus-separator::before, .nexus-separator::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.nexus-separator span {
+  padding: 0 1rem;
+}
+
+/* ☑️ CUSTOM CHECKBOX */
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+/* 🎬 ANIMATIONS */
+@keyframes cardEntrance {
+  from { 
+    opacity: 0; 
+    transform: translateY(40px) scale(0.95); 
+    filter: blur(10px);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+    filter: blur(0);
+  }
+}
+
+/* 📱 RESPONSIVE SCALING */
+@media (max-width: 768px) {
+  .page-wrapper {
+    padding: 1rem;
+  }
+  
+  .login-card {
+    padding: 1.5rem;
+    max-width: 100%;
+    margin-top: 1rem;
+  }
+  
+  .brand-title {
+    font-size: 1.5rem;
+  }
+  
+  .input-columns {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    border-radius: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: none;
+    background: #ffffff;
+  }
+  
+  .bg-layer, .bg-overlay {
+    display: none;
+  }
+  
+  .page-wrapper {
+    padding: 0;
+    height: 100vh;
+    align-items: stretch;
+  }
+}
+
+/* Form validation (template-driven) */
+.field-error {
+  color: #f87171;
+  font-size: 0.8rem;
+  margin: 0.35rem 0 0 0.25rem;
+}
+
+.input-glow-wrapper .input-invalid {
+  border-color: #f87171 !important;
+  box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.35);
+}

@@ -1,0 +1,254 @@
+<div class="inventory-container">
+  <header class="content-header" [class.scrolled]="isScrolled">
+    <div class="title-section">
+      <h2>Product Inventory</h2>
+      <p class="subtitle">Showing {{ filteredProducts.length }} products in stock</p>
+    </div>
+
+    <div class="header-actions">
+      <div class="search-box">
+        <span class="material-icons">search</span>
+        <input type="text" placeholder="Search products..." (input)="onSearch($event)">
+      </div>
+      
+      <button class="btn-cyber-secondary" (click)="loadInventory()">
+        <span class="material-icons">sync</span> Refresh
+      </button>
+      <button class="btn-cyber-primary" (click)="triggerAutoRestock()" title="Scan and generate Purchase Orders for all low stock items">
+        <span class="material-icons">auto_fix_high</span> Smart-Restock Scan
+      </button>
+
+      <button class="btn-primary" (click)="openAddModal()">
+        <span class="material-icons">add</span> Add New Product
+      </button>
+    </div>
+  </header>
+
+  <div class="table-card">
+    @if (filteredProducts.length > 0) {
+      <div class="responsive-table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Product Details</th>
+              <th>Category</th>
+              <th>Supplier</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Status</th>
+              <th class="actions-cell">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (product of filteredProducts; track product.id) {
+              <tr>
+                <td>
+                  <div class="product-info">
+                    <div class="name-stub">{{ product.productName.charAt(0) }}</div>
+                    <div class="name-text">
+                      <span class="p-name">{{ product.productName }}</span>
+                      <span class="p-id">ID: #{{ product.id }}</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="category-tag">{{ product.category }}</span></td>
+                <td><span class="supplier-text">{{ product.supplierName || 'Not Assigned' }}</span></td>
+                <td class="price-val">₹{{ product.price }}</td>
+                <td class="stock-val">{{ product.currentStock }} Units</td>
+                <td>
+                  <span class="badge" [ngClass]="{
+                    'badge-success': product.currentStock > (product.reorderPoint || 10),
+                    'badge-warning': product.currentStock <= (product.reorderPoint || 10) && product.currentStock > 0,
+                    'badge-danger': product.currentStock === 0
+                  }">
+                    {{ product.currentStock > (product.reorderPoint || 10) ? 'IN STOCK' : (product.currentStock === 0 ? 'OUT OF STOCK' : 'LOW STOCK') }}
+                  </span>
+                </td>
+                <td class="actions-cell">
+                  <button class="icon-btn edit" (click)="openEditModal(product)" title="Edit">
+                    <span class="material-icons">edit</span>
+                  </button>
+                  <button class="icon-btn delete" (click)="deleteProduct(product.id || 0)" title="Delete">
+                    <span class="material-icons">delete_outline</span>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <div class="empty-state">
+        <span class="material-icons">inventory_2</span>
+        <p>No products match your criteria.</p>
+        <span>Try adjusting your search or add a new product to the list.</span>
+      </div>
+    }
+  </div>
+
+  @if (showModal) {
+    <div class="modal-overlay" (click)="closeModal()" (keydown.escape)="closeModal()" (keydown.enter)="closeModal()" (keydown.space)="closeModal()" role="button" tabindex="0" aria-label="Close modal overlay">
+      <div class="modal-content" (click)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()" role="dialog" aria-modal="true" aria-labelledby="inv-modal-title" tabindex="-1">
+  
+        <div class="modal-header">
+          <h3 id="inv-modal-title">{{ isEditing ? 'Edit Product' : 'Add New Product' }}</h3>
+          <button class="close-x" (click)="closeModal()" aria-label="Close modal">
+            <span class="material-icons">close</span>
+          </button>
+        </div>
+    
+        <form (ngSubmit)="saveProduct(productForm)" #productForm="ngForm" novalidate>
+          <div class="form-group" style="padding: 10px 0;">
+            <label for="inv-name">Product Name</label>
+            <input
+              id="inv-name"
+              type="text"
+              name="productName"
+              [(ngModel)]="currentProduct.productName"
+              #productNameRef="ngModel"
+              required
+              minlength="2"
+              maxlength="100"
+              placeholder="Enter product name"
+              [class.input-invalid]="productNameRef.invalid && (productNameRef.touched || productForm.submitted)"
+            >
+            @if ((productNameRef.touched || productForm.submitted) && productNameRef.errors?.['required']) {
+              <p class="field-error">Product name is required.</p>
+            }
+            @if ((productNameRef.touched || productForm.submitted) && (productNameRef.errors?.['minlength'] || productNameRef.errors?.['maxlength'])) {
+              <p class="field-error">Name must be 2–100 characters.</p>
+            }
+          </div>
+    
+          <div class="form-row" style="display: flex; gap: 15px; padding-bottom: 10px;">
+            <div class="form-group" style="flex: 1;">
+              <label for="inv-category">Category</label>
+              <input
+                id="inv-category"
+                type="text"
+                name="productCategory"
+                [(ngModel)]="currentProduct.category"
+                #productCategoryRef="ngModel"
+                required
+                minlength="2"
+                maxlength="50"
+                placeholder="e.g. Electronics"
+                [class.input-invalid]="productCategoryRef.invalid && (productCategoryRef.touched || productForm.submitted)"
+              >
+              @if ((productCategoryRef.touched || productForm.submitted) && productCategoryRef.errors?.['required']) {
+                <p class="field-error">Category is required.</p>
+              }
+              @if ((productCategoryRef.touched || productForm.submitted) && (productCategoryRef.errors?.['minlength'] || productCategoryRef.errors?.['maxlength'])) {
+                <p class="field-error">Category must be 2–50 characters.</p>
+              }
+            </div>
+            <div class="form-group" style="flex: 1;">
+              <label for="inv-supplier">Supplier</label>
+              <select
+                id="inv-supplier"
+                name="supplierName"
+                [(ngModel)]="currentProduct.supplierName"
+                #supplierSelectRef="ngModel"
+                required
+                class="form-select"
+                style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;"
+                [class.input-invalid]="supplierSelectRef.invalid && (supplierSelectRef.touched || productForm.submitted)"
+              >
+                <option [ngValue]="undefined">-- Select Supplier --</option>
+                @for (s of suppliers; track s.supplierId) {
+                  <option [ngValue]="s.supplierName">{{ s.supplierName }}</option>
+                }
+              </select>
+              @if ((supplierSelectRef.touched || productForm.submitted) && supplierSelectRef.errors?.['required']) {
+                <p class="field-error">Select a supplier.</p>
+              }
+            </div>
+          </div>
+    
+          <div class="form-row" style="display: flex; gap: 15px;">
+            <div class="form-group" style="flex: 1;">
+              <label for="inv-price">Price (₹)</label>
+              <input
+                id="inv-price"
+                type="number"
+                name="productPrice"
+                [(ngModel)]="currentProduct.price"
+                #productPriceRef="ngModel"
+                required
+                min="0"
+                max="99999999"
+                step="0.01"
+                [class.input-invalid]="productPriceRef.invalid && (productPriceRef.touched || productForm.submitted)"
+              >
+              @if ((productPriceRef.touched || productForm.submitted) && productPriceRef.errors) {
+                <p class="field-error">Enter a price between 0 and 99,999,999.</p>
+              }
+            </div>
+            <div class="form-group" style="flex: 1;">
+              <label for="inv-stock">Stock Count</label>
+              <input
+                id="inv-stock"
+                type="number"
+                name="currentStock"
+                [(ngModel)]="currentProduct.currentStock"
+                #stockRef="ngModel"
+                required
+                min="0"
+                max="9999999"
+                step="1"
+                [class.input-invalid]="stockRef.invalid && (stockRef.touched || productForm.submitted)"
+              >
+              @if ((stockRef.touched || productForm.submitted) && stockRef.errors) {
+                <p class="field-error">Enter a whole number from 0 to 9,999,999.</p>
+              }
+            </div>
+          </div>
+
+          <div class="form-group" style="padding-bottom: 10px;">
+            <label for="inv-reorder">Reorder point (units)</label>
+            <input
+              id="inv-reorder"
+              type="number"
+              name="reorderPoint"
+              [(ngModel)]="currentProduct.reorderPoint"
+              #reorderRef="ngModel"
+              min="0"
+              max="999999"
+              step="1"
+              [class.input-invalid]="reorderRef.invalid && (reorderRef.touched || productForm.submitted)"
+            >
+            @if ((reorderRef.touched || productForm.submitted) && reorderRef.errors) {
+              <p class="field-error">Reorder point must be between 0 and 999,999.</p>
+            }
+          </div>
+    
+          <div class="modal-footer">
+            <button type="button" class="btn-cancel" (click)="closeModal()">Cancel</button>
+            <button type="submit" class="btn-primary" [disabled]="isLoading">
+              {{ isEditing ? 'Save Changes' : 'Create Product' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  @if (showDeleteModal) {
+    <div class="modal-overlay" (click)="closeDeleteModal()" (keydown.escape)="closeDeleteModal()" tabindex="0">
+      <div class="modal-content delete-modal" (click)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()" role="dialog" aria-modal="true" aria-labelledby="del-modal-title" tabindex="-1">
+        <div class="modal-header danger-header">
+          <span class="material-icons warning-icon">warning_amber</span>
+          <h3>Confirm Deletion</h3>
+        </div>
+        <div class="modal-body text-center">
+          <p>Are you absolutely sure you want to permanently delete this product?</p>
+          <span class="danger-subtext">This action cannot be undone and will permanently erase associated records.</span>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-cancel" (click)="closeDeleteModal()">Cancel</button>
+          <button class="btn-danger" (click)="confirmDelete()">Delete Product</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

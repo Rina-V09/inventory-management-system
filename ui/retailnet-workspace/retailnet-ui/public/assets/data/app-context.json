@@ -1,0 +1,8 @@
+{
+  "INVENTORY_CONTEXT": "http://localhost:8081/api/",
+  "KEYCLOAK_URL": "http://localhost:8080",
+  "KEYCLOAK_REALM": "retailnet",
+  "KEYCLOAK_CLIENT_ID": "retailnet-ui",
+  "OIDC_REDIRECT_URI": "http://localhost:4200/login",
+  "KEYCLOAK_IDP_HINT": "google"
+}

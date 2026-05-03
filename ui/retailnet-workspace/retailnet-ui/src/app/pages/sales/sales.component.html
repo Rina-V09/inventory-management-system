@@ -1,0 +1,92 @@
+<div class="sales-container">
+    <header class="content-header">
+      <div class="title-section">
+        <h2>Sales Dashboard</h2>
+        <p class="current-date">Overview for {{ today | date:'fullDate' }}</p>
+      </div> <div class="header-actions">
+        <button class="btn-outline" (click)="openCalendar()">
+          <span class="material-icons">calendar_today</span>
+          Select Date
+        </button>
+        <input #datePicker 
+         type="date" 
+         (change)="onDateChange($event)" 
+         style="display: none;">
+        <button class="btn-primary" (click)="exportToPDF()">
+            <span class="material-icons">download</span>
+            Download Report
+        </button>
+      </div>
+    </header> <div class="stats-grid"> <div class="stat-card">
+        <div class="icon-wrapper rev-bg">
+          <span class="material-icons">account_balance_wallet</span>
+        </div>
+        <div class="stat-info">
+          <p class="label">Total Revenue</p>
+          <h3>₹{{ stats.revenue | number:'1.0-0' }}</h3>
+        </div>
+      </div>
+  
+      <div class="stat-card">
+        <div class="icon-wrapper ord-bg">
+          <span class="material-icons">local_shipping</span>
+        </div>
+        <div class="stat-info">
+          <p class="label">Total Orders</p>
+          <h3>{{ stats.orders }}</h3>
+        </div>
+      </div>
+  
+      <div class="stat-card">
+        <div class="icon-wrapper cus-bg">
+          <span class="material-icons">person_add</span>
+        </div>
+        <div class="stat-info">
+          <p class="label">Distinct products sold</p>
+          <h3>{{ stats.customers }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+        <h4>Revenue trend (last 7 days)</h4>
+        @if (!chartHasData && stats.revenue > 0) {
+          <p class="chart-hint">You have sales in the list, but none fall in the <strong>last 7 days</strong> — dates outside this window are excluded from the trend chart.</p>
+        }
+        @if (!chartHasData && stats.revenue <= 0) {
+          <p class="chart-hint">No revenue in the last 7 days. Record sales (or add history in the database) to see the line move.</p>
+        }
+        <div class="chart-container">
+            <canvas baseChart
+            [data]="lineChartData"
+            [options]="lineChartOptions"
+            [type]="'line'">
+        </canvas>
+    </div></div>
+  
+    <div class="table-card">
+      <h4>Recent Transactions</h4>
+      <div class="responsive-table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (t of transactions; track t.saleId) {
+              <tr>
+                <td style="font-weight: 600;">#{{ t.saleId }}</td>
+                <td>{{ t.productName }}</td>
+                <td style="color: #2e7d32; font-weight: 700;">₹{{ t.totalAmount }}</td>
+                <td><span class="badge badge-success">COMPLETED</span></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>

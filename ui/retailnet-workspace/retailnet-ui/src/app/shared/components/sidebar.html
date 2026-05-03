@@ -1,0 +1,59 @@
+<aside class="sidebar">
+    <h3>RetailNet</h3>
+    <nav>
+      <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <span class="material-icons">dashboard</span> Dashboard
+      </a>
+      
+      <!-- INVENTORY MANAGER -->
+      @if (isInventoryManager) {
+        <a routerLink="/inventory" routerLinkActive="active">
+          <span class="material-icons">inventory_2</span> Inventory
+        </a>
+        <a routerLink="/purchase-orders" routerLinkActive="active">
+          <span class="material-icons">local_shipping</span> Purchase Orders
+        </a>
+        <a routerLink="/forecast" routerLinkActive="active">
+          <span class="material-icons">bar_chart</span> Analytics
+        </a>
+      }
+
+      <!-- PROCUREMENT -->
+      @if (isProcurement) {
+        <a routerLink="/purchase-orders" routerLinkActive="active">
+          <span class="material-icons">local_shipping</span> Purchase Orders
+        </a>
+        <a routerLink="/suppliers" routerLinkActive="active">
+          <span class="material-icons">storefront</span> Suppliers
+        </a>
+        <a routerLink="/purchase-orders" [queryParams]="{view: 'tracking'}" routerLinkActive="active">
+          <span class="material-icons">route</span> Order Tracking
+        </a>
+      }
+
+      <!-- SALES -->
+      @if (isSales) {
+        <a routerLink="/sales" routerLinkActive="active">
+          <span class="material-icons">trending_up</span> Sales Data
+        </a>
+        <a routerLink="/forecast" routerLinkActive="active">
+          <span class="material-icons">insights</span> Predictions
+        </a>
+      }
+
+      <div style="border-top: 1px solid var(--panel-border); margin: 16px 0; opacity: 0.1;"></div>
+
+      <!-- IT SUPPORT -->
+      @if (isITSupport || isInventoryManager) {
+        <a routerLink="/it-support" routerLinkActive="active">
+          <span class="material-icons">dvr</span> IT Support
+        </a>
+      }
+    </nav>
+    
+    <div class="sidebar-footer">
+      <button (click)="logout()" class="logout-btn">
+        <span class="material-icons">logout</span> Logout
+      </button>
+    </div>
+  </aside>

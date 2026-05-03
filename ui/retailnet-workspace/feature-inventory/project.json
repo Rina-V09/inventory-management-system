@@ -1,0 +1,21 @@
+{
+  "name": "feature-inventory",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "feature-inventory/src",
+  "prefix": "lib",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "feature-inventory/jest.config.cts",
+        "tsConfig": "feature-inventory/tsconfig.spec.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

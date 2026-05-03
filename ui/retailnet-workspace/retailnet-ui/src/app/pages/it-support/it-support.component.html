@@ -1,0 +1,82 @@
+<div class="it-support-container active-theme-container">
+    <header class="content-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+      <div class="title-section">
+        <h2 style="font-size: 28px; font-weight: 700; color: var(--text-main); margin-bottom: 4px;">System <span style="color: var(--primary);">Health</span></h2>
+        <p style="color: var(--text-muted); font-size: 14px;">Real-time infrastructure monitoring for RetailNet Supplies</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn-cyber-primary" (click)="refreshHealth()">
+          <span class="material-icons">refresh</span> RE-SCAN SYSTEM
+        </button>
+      </div>
+    </header> 
+    
+    <div class="it-dashboard-grid">
+      <!-- Health Indicators -->
+      <div class="health-overview-panel global-glass-panel">
+        <div class="panel-header"><h3>Active Services</h3></div>
+        <div class="health-list">
+          @for (h of healthMetrics; track h.service) {
+            <div class="health-item">
+              <div class="indicator" [class]="h.status.toLowerCase()"></div>
+              <div class="h-info">
+                <span class="service">{{ h.service }}</span>
+                <span class="time">Last Check: {{ h.lastCheck | date:'shortTime' }}</span>
+              </div>
+              <div class="latency">{{ h.latency }}</div>
+            </div>
+          }
+        </div>
+      </div>
+  
+      <!-- ERP Sync Progress -->
+      <div class="sync-panel global-glass-panel">
+        <div class="panel-header"><h3>ERP Data Stream</h3></div>
+        <div class="sync-status">
+          <div class="progress-circle">
+            <span class="pct">{{ erpSyncProgress }}%</span>
+            <span class="lbl">In-Sync</span>
+          </div>
+          <div class="sync-details">
+            <p><strong>Last Sync:</strong> 12m ago</p>
+            <p><strong>Payload:</strong> 1,240 Products</p>
+            <p><strong>Status:</strong> Validating...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Audit Trail -->
+    <div class="audit-panel global-glass-panel" style="margin-top: 24px;">
+      <div class="panel-header" style="margin-bottom: 20px;">
+        <h3>Security Audit Trail</h3>
+      </div>
+      <table class="it-table">
+        <thead>
+          <tr>
+            <th>Event ID</th>
+            <th>Authorized User</th>
+            <th>Operation</th>
+            <th>Time</th>
+            <th>Severity</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (log of auditLogs; track log.id) {
+            <tr [style.background]="log.severity === 'CRITICAL' ? 'rgba(239, 68, 68, 0.05)' : ''">
+              <td class="log-id">{{ log.id }}</td>
+              <td class="user-cell">
+                <span class="material-icons" style="font-size: 16px; margin-right: 4px;">perm_identity</span>
+                {{ log.user }}
+              </td>
+              <td>{{ log.action }}</td>
+              <td>{{ log.timestamp | date:'short' }}</td>
+              <td>
+                <span class="it-badge" [class]="log.severity.toLowerCase()">{{ log.severity }}</span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>

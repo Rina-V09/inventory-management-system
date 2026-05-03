@@ -1,0 +1,118 @@
+<div class="forecast-container active-theme-container">
+  <header class="content-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px;">
+    <div class="title-section">
+      <h2 style="font-size: 28px; font-weight: 700; color: var(--text-main); margin-bottom: 4px;">Demand <span style="color: var(--primary);">Analysis</span></h2>
+      <p style="color: var(--text-muted); font-size: 14px;">Sales-based projections for upcoming inventory periods</p>
+    </div>
+    <div class="header-actions" style="margin-top: 8px;">
+      <button class="btn-cyber-primary" (click)="runFullAnalysis()" [disabled]="isLoading">
+        <span class="material-icons">analytics</span> RUN SYSTEM ANALYSIS
+      </button>
+    </div>
+  </header>
+
+  @if (isLoading) {
+    <div class="processing-state" style="padding: 120px 40px; text-align: center; color: var(--text-muted); background: rgba(0,0,0,0.05); border-radius: 24px; border: 2px dashed var(--panel-border); margin-bottom: 32px;">
+      <div class="spinner-box" style="margin-bottom: 24px;">
+        <span class="material-icons" style="font-size: 48px; animation: spin 2s linear infinite;">sync</span>
+      </div>
+      <p style="font-size: 1.2rem; font-weight: 600; color: var(--text-main); margin-bottom: 8px;">Processing Inventory Data...</p>
+      <p style="font-size: 0.9rem;">Calculating demand projections based on historical sales trends.</p>
+    </div>
+  } @else {
+    <div class="ai-dashboard-grid" style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 24px;">
+      
+      <!-- Central Chart Array -->
+      <div class="global-glass-panel chart-panel">
+        <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--panel-border); padding-bottom: 16px; margin-bottom: 24px;">
+          <h3 style="font-size: 1.25rem; margin: 0;">Predicted Demand Matrix</h3>
+          
+          <div class="chart-controls" style="display: flex; gap: 8px; align-items: center;">
+            <span style="font-size: 11px; text-transform: uppercase; color: var(--text-muted);">View Range:</span>
+            <button class="toggle-btn" [class.active]="!showAllProducts" (click)="showAllProducts = false; updateChart()">Top 10</button>
+            <button class="toggle-btn" [class.active]="showAllProducts" (click)="showAllProducts = true; updateChart()">All Products</button>
+          </div>
+        </div>
+        
+        <!-- Redesigned with Vertical Scroll for Horizontal Bars -->
+        <div class="chart-scroll-wrapper" style="width: 100%; height: 450px; overflow-y: auto; padding-right: 12px;">
+          <div class="chart-container" [style.height]="chartHeight" style="width: 100%; min-height: 100%; transition: height 0.3s ease;">
+            <canvas baseChart 
+              [data]="chartData" 
+              [options]="chartOptions" 
+              [type]="'bar'">
+            </canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Insights Feed -->
+      <div class="global-glass-panel insights-panel" style="display: flex; flex-direction: column;">
+        <div class="panel-header" style="margin-bottom: 20px;">
+          <h3 style="font-size: 1.25rem; margin: 0;"><span class="material-icons" style="vertical-align: middle;">insights</span> AI Analysis</h3>
+        </div>
+        <div class="insights-feed" style="display: flex; flex-direction: column; gap: 12px;">
+          @for (insight of aiInsights; track $index) {
+            <div class="insight-item" style="padding: 16px; border-radius: 12px; font-size: 13px; background: rgba(0,0,0,0.2); border-left: 4px solid var(--text-muted);"
+                 [style.border-left-color]="insight.includes('CRITICAL') ? 'var(--danger)' : (insight.includes('HIGH CONFIDENCE') ? 'var(--success)' : 'var(--primary)')">
+              <p style="margin: 0; line-height: 1.6; color: var(--text-main);">{{ insight }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Table Output -->
+    <div class="global-glass-panel bottom-panel" style="padding: 0; overflow: hidden;">
+        <div class="panel-header" style="padding: 24px; border-bottom: 1px solid var(--panel-border);">
+          <h3 style="margin: 0; font-size: 1.25rem;">Prediction Telemetry</h3>
+        </div>
+        <div class="forecast-table-wrapper" style="width: 100%; overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead style="background: rgba(0,0,0,0.15);">
+              <tr>
+                <th style="padding: 16px 24px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Stock Unit</th>
+                <th style="padding: 16px 24px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Confidence</th>
+                <th style="padding: 16px 24px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Predicted Volume</th>
+                <th style="padding: 16px 24px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (f of forecasts; track f.forecastId) {
+                <tr style="border-bottom: 1px solid var(--panel-border); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'">
+                  <td style="padding: 12px 24px;">
+                    <div style="display: flex; flex-direction: column;">
+                      <span style="font-weight: 600; color: var(--text-main);">{{ getProductName(f.stockKeepUnit) }}</span>
+                      <span style="font-size: 11px; color: var(--text-muted);">{{ f.stockKeepUnit }}</span>
+                    </div>
+                  </td>
+                  <td style="padding: 12px 24px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <div style="background: rgba(0,0,0,0.2); border-radius: 99px; height: 6px; width: 60px; position: relative;">
+                        <div style="height: 100%; border-radius: 99px; transition: width 1s ease;"
+                             [style.width.%]="(f.confidenceScore || 0) * 100"
+                             [style.background]="(f.confidenceScore || 0) > 0.9 ? 'var(--success)' : 'var(--warning)'">
+                        </div>
+                      </div>
+                      <span style="font-size: 12px; font-weight: 700; color: var(--text-main);">{{ ((f.confidenceScore || 0) * 100).toFixed(0) }}%</span>
+                    </div>
+                  </td>
+                  <td style="padding: 12px 24px; font-weight: 700; color: var(--primary);">
+                    {{ f.predictedDemand }} Units
+                  </td>
+                  <td style="padding: 12px 24px;">
+                    <button style="background: transparent; border: 1px solid var(--panel-border); color: var(--text-muted); padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;"
+                            onmouseover="this.style.borderColor='var(--primary)'; this.style.color='var(--primary)'"
+                            onmouseout="this.style.borderColor='var(--panel-border)'; this.style.color='var(--text-muted)'"
+                            (click)="generateForecast(getProductId(f.stockKeepUnit))">
+                      REFRESH
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+    </div>
+  }
+</div>

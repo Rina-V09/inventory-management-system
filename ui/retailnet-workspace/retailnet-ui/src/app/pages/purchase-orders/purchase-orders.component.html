@@ -1,0 +1,103 @@
+<div class="po-container">
+  <header class="content-header">
+    <div class="title-section">
+      <h2>{{ isTrackingView ? 'Order Tracking' : 'Procurement Orders' }}</h2>
+      <p class="subtitle">{{ isTrackingView ? 'Monitoring active shipments and transit status' : 'Track and manage vendor purchase orders' }}</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-cyber-primary" (click)="loadOrders()">
+        <span class="material-icons">refresh</span> Refresh Orders
+      </button>
+    </div>
+  </header>
+
+  <div class="stats-overview">
+    <div class="stat-box pending">
+      <span class="label">Pending Approval</span>
+      <span class="value">{{ (orders | filterStatus:'PENDING').length }}</span>
+    </div>
+    <div class="stat-box approved">
+      <span class="label">Approved</span>
+      <span class="value">{{ (orders | filterStatus:'APPROVED').length }}</span>
+    </div>
+    <div class="stat-box sent">
+      <span class="label">Shipped / In Transit</span>
+      <span class="value">{{ (orders | filterStatus:'SHIPPED').length }}</span>
+    </div>
+    <div class="stat-box received">
+      <span class="label">Delivered</span>
+      <span class="value">{{ (orders | filterStatus:'DELIVERED').length }}</span>
+    </div>
+  </div>
+
+  <div class="table-card">
+    @if (isLoading) {
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Fetching orders...</p>
+      </div>
+    } @else {
+      @if (displayOrders.length > 0) {
+        <div class="responsive-table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Product Information</th>
+                <th>Quantity</th>
+                <th>Order Date</th>
+                <th>Status</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (order of displayOrders; track order.orderId) {
+                <tr>
+                  <td><span class="po-id">#{{ order.orderId }}</span></td>
+                  <td>
+                    <div class="product-info">
+                      <span class="p-name">{{ order.productName || 'Unknown Product' }}</span>
+                    </div>
+                  </td>
+                  <td>{{ order.quantity }} Units</td>
+                  <td>{{ order.orderDate || 'N/A' | date:'shortDate' }}</td>
+                  <td>
+                    <span class="status-badge" [ngClass]="getStatusClass(order.status)">
+                      {{ order.status }}
+                    </span>
+                  </td>
+                  <td style="text-align: right;">
+                    @if (order.status !== 'DELIVERED' && order.status !== 'CANCELLED') {
+                      <div class="action-group">
+                        <button
+                          [class]="order.status === 'PENDING' ? 'btn-cyber-warning' : 'btn-cyber-success'"
+                          (click)="updateStatus(order.orderId, order.status)">
+                          {{ order.status === 'PENDING'
+                            ? 'Approve Order'
+                            : (order.status === 'APPROVED' ? 'Mark as Shipped' : 'Confirm Delivery') }}
+                        </button>
+
+                        @if (order.status === 'PENDING' || order.status === 'APPROVED') {
+                          <button class="btn-cyber-danger" (click)="cancelOrder(order.orderId, order.status)">
+                            Cancel
+                          </button>
+                        }
+                      </div>
+                    } @else {
+                      <span class="final-status">{{ order.status === 'CANCELLED' ? 'Cancelled' : 'Fulfilled' }}</span>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <div class="empty-state">
+          <span class="material-icons">list_alt</span>
+          <p>No purchase orders found.</p>
+        </div>
+      }
+    }
+  </div>
+</div>

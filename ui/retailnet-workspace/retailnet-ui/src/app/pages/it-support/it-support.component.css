@@ -1,0 +1,38 @@
+.it-support-container { padding: 32px; max-width: 1400px; margin: 0 auto; }
+.it-dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+
+.panel-header h3 { margin: 0; font-size: 1.25rem; font-weight: 700; color: var(--text-main); }
+.health-list { display: flex; flex-direction: column; gap: 16px; margin-top: 16px; }
+
+.health-item {
+  display: flex; align-items: center; gap: 16px; padding: 12px; border-radius: 12px;
+  background: rgba(0,0,0,0.03); border: 1px solid var(--panel-border);
+}
+
+.indicator { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 10px currentColor; }
+.indicator.online { background: #10b981; color: #10b981; }
+.indicator.degraded { background: #f59e0b; color: #f59e0b; }
+.indicator.offline { background: #ef4444; color: #ef4444; }
+
+.h-info { flex: 1; display: flex; flex-direction: column; }
+.service { font-weight: 600; font-size: 14px; }
+.time { font-size: 11px; color: var(--text-muted); }
+.latency { font-family: 'Courier New', monospace; font-size: 12px; color: var(--primary); }
+
+.sync-status { display: flex; align-items: center; justify-content: center; height: 100%; gap: 24px; padding: 20px; }
+.progress-circle { 
+  width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--primary);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  box-shadow: 0 0 20px var(--primary-glow);
+}
+.pct { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+.lbl { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
+
+.it-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.it-table th { text-align: left; padding: 12px 16px; font-size: 12px; color: var(--text-muted); text-transform: uppercase; border-bottom: 2px solid var(--panel-border); }
+.it-table td { padding: 16px; font-size: 13px; border-bottom: 1px solid var(--panel-border); color: var(--text-main); }
+
+.it-badge { padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 800; }
+.it-badge.info { background: rgba(0,0,0,0.1); color: var(--text-muted); }
+.it-badge.warn { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+.it-badge.critical { background: rgba(239, 68, 68, 0.1); color: #ef4444; }

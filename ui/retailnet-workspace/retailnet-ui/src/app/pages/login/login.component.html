@@ -1,0 +1,254 @@
+<div class="page-wrapper">
+  <!-- 🛰️ HYPER-REALISTIC FUTURISTIC WAREHOUSE BACKGROUND -->
+  <div class="bg-layer"></div>
+  <div class="bg-overlay"></div>
+  
+  <div class="login-card shadow-cyber">
+    <div class="brand-section">
+      <div class="logo-circle glow-cyan">
+        <span class="material-icons">inventory_2</span>
+      </div>
+      <h1 class="brand-title">RetailNet</h1>
+      <p class="brand-tagline">Advanced Inventory Intelligence</p>
+    </div>
+
+    <div class="view-container">
+      @if (isLoginMode) {
+        <!-- LOGIN VIEW -->
+        <div class="form-content">
+          <header>
+            <h2 class="auth-header">Sign In</h2>
+            <p class="auth-subheader">Access your inventory dashboard</p>
+          </header>
+
+          <form (ngSubmit)="signIn()" #loginForm="ngForm" novalidate>
+            <div class="field-container">
+              <label for="username">Username</label>
+              <div class="input-glow-wrapper">
+                <span class="material-icons prefix-icon">person</span>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  [(ngModel)]="username"
+                  #loginUsername="ngModel"
+                  placeholder="Enter username"
+                  required
+                  minlength="3"
+                  maxlength="64"
+                  [pattern]="usernamePattern"
+                  autocomplete="username"
+                  [class.input-invalid]="loginUsername.invalid && loginUsername.touched"
+                >
+              </div>
+              @if (loginUsername.touched && loginUsername.errors?.['required']) {
+                <p class="field-error">Username is required.</p>
+              }
+              @if (loginUsername.touched && loginUsername.errors?.['minlength']) {
+                <p class="field-error">Username must be at least 3 characters.</p>
+              }
+              @if (loginUsername.touched && loginUsername.errors?.['maxlength']) {
+                <p class="field-error">Username must be at most 64 characters.</p>
+              }
+              @if (loginUsername.touched && loginUsername.errors?.['pattern']) {
+                <p class="field-error">Use only letters, numbers, and . _ -</p>
+              }
+            </div>
+            
+            <div class="field-container">
+              <label for="password">Password</label>
+              <div class="input-glow-wrapper">
+                <span class="material-icons prefix-icon">lock</span>
+                <input
+                  [type]="isPasswordVisible ? 'text' : 'password'"
+                  id="password"
+                  name="password"
+                  [(ngModel)]="password"
+                  #loginPassword="ngModel"
+                  placeholder="••••••••"
+                  required
+                  minlength="6"
+                  maxlength="128"
+                  autocomplete="current-password"
+                  [class.input-invalid]="loginPassword.invalid && loginPassword.touched"
+                >
+                <button type="button" class="visibility-toggle" (click)="togglePasswordVisibility()" [title]="isPasswordVisible ? 'Hide Password' : 'Show Password'">
+                  <span class="material-icons">{{ isPasswordVisible ? 'visibility_off' : 'visibility' }}</span>
+                </button>
+              </div>
+              @if (loginPassword.touched && loginPassword.errors?.['required']) {
+                <p class="field-error">Password is required.</p>
+              }
+              @if (loginPassword.touched && loginPassword.errors?.['minlength']) {
+                <p class="field-error">Password must be at least 6 characters.</p>
+              }
+            </div>
+
+            <div class="auth-options">
+              <label class="custom-checkbox">
+                <input type="checkbox" checked>
+                <span class="checkmark"></span>
+                Remember me
+              </label>
+              <a
+                href="#"
+                class="cyber-link"
+                role="button"
+                (click)="openForgotPassword($event)"
+                (keydown.enter)="openForgotPassword($event)"
+              >Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="btn-cyber-primary" [disabled]="!loginForm.form.valid">
+              SIGN IN
+              <span class="material-icons">login</span>
+            </button>
+          </form>
+
+          <div class="nexus-separator">
+            <span>or continue with</span>
+          </div>
+
+          <button class="btn-google-cyber" (click)="loginWithGoogle()">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+            Google
+          </button>
+
+          <footer class="nexus-footer">
+            <p>New user? <a (click)="toggleMode()" (keydown.enter)="toggleMode()" class="nexus-link" role="button" tabindex="0">Create Account</a></p>
+          </footer>
+        </div>
+      } @else {
+        <!-- SIGNUP VIEW -->
+        <div class="form-content">
+          <header>
+            <h2 class="auth-header">Sign Up</h2>
+            <p class="auth-subheader">Register your retail account</p>
+          </header>
+
+          <form (ngSubmit)="onSignUp()" #signupForm="ngForm" novalidate>
+            <div class="field-container">
+              <label for="reg-email">Email Address</label>
+              <div class="input-glow-wrapper">
+                <span class="material-icons prefix-icon">mail</span>
+                <input
+                  type="email"
+                  id="reg-email"
+                  name="regEmail"
+                  [(ngModel)]="email"
+                  #regEmail="ngModel"
+                  placeholder="example@retailnet.com"
+                  required
+                  maxlength="120"
+                  [pattern]="emailPattern"
+                  autocomplete="email"
+                  [class.input-invalid]="regEmail.invalid && regEmail.touched"
+                >
+              </div>
+              @if (regEmail.touched && regEmail.errors?.['required']) {
+                <p class="field-error">Email is required.</p>
+              }
+              @if (regEmail.touched && (regEmail.errors?.['email'] || regEmail.errors?.['pattern'])) {
+                <p class="field-error">Enter a valid email address.</p>
+              }
+            </div>
+
+            <div class="field-container">
+              <label for="reg-username">Username</label>
+              <div class="input-glow-wrapper">
+                <span class="material-icons prefix-icon">person_outline</span>
+                <input
+                  type="text"
+                  id="reg-username"
+                  name="regUsername"
+                  [(ngModel)]="username"
+                  #regUsername="ngModel"
+                  placeholder="Choose username"
+                  required
+                  minlength="3"
+                  maxlength="64"
+                  [pattern]="usernamePattern"
+                  autocomplete="username"
+                  [class.input-invalid]="regUsername.invalid && regUsername.touched"
+                >
+              </div>
+              @if (regUsername.touched && regUsername.errors?.['required']) {
+                <p class="field-error">Username is required.</p>
+              }
+              @if (regUsername.touched && (regUsername.errors?.['minlength'] || regUsername.errors?.['maxlength'] || regUsername.errors?.['pattern'])) {
+                <p class="field-error">3–64 characters: letters, numbers, . _ -</p>
+              }
+            </div>
+            
+            <div class="input-columns">
+              <div class="field-container">
+                <label for="reg-pass">Password</label>
+                <div class="input-glow-wrapper">
+                  <input
+                    [type]="isPasswordVisible ? 'text' : 'password'"
+                    id="reg-pass"
+                    name="regPassword"
+                    [(ngModel)]="password"
+                    #regPassword="ngModel"
+                    placeholder="••••••••"
+                    required
+                    minlength="8"
+                    maxlength="128"
+                    [pattern]="passwordStrengthPattern"
+                    autocomplete="new-password"
+                    [class.input-invalid]="regPassword.invalid && regPassword.touched"
+                  >
+                </div>
+                @if (regPassword.touched && regPassword.errors?.['required']) {
+                  <p class="field-error">Password is required.</p>
+                }
+                @if (regPassword.touched && regPassword.errors?.['minlength']) {
+                  <p class="field-error">At least 8 characters.</p>
+                }
+                @if (regPassword.touched && regPassword.errors?.['pattern']) {
+                  <p class="field-error">Include at least one letter and one number.</p>
+                }
+              </div>
+              <div class="field-container">
+                <label for="reg-confirm">Confirm</label>
+                <div class="input-glow-wrapper">
+                  <input
+                    [type]="isPasswordVisible ? 'text' : 'password'"
+                    id="reg-confirm"
+                    name="regConfirm"
+                    [(ngModel)]="confirmPassword"
+                    #regConfirm="ngModel"
+                    placeholder="••••••••"
+                    required
+                    minlength="8"
+                    autocomplete="new-password"
+                    [class.input-invalid]="(regConfirm.invalid && regConfirm.touched) || (signupPasswordMismatch() && regConfirm.touched)"
+                  >
+                  <button type="button" class="visibility-toggle" (click)="togglePasswordVisibility()">
+                    <span class="material-icons">{{ isPasswordVisible ? 'visibility_off' : 'visibility' }}</span>
+                  </button>
+                </div>
+                @if (regConfirm.touched && signupPasswordMismatch()) {
+                  <p class="field-error">Passwords do not match.</p>
+                }
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="btn-cyber-primary"
+              [disabled]="!signupForm.form.valid || signupPasswordMismatch()"
+            >
+              CREATE ACCOUNT
+              <span class="material-icons">person_add</span>
+            </button>
+          </form>
+
+          <footer class="nexus-footer">
+            <p>Already have an account? <a (click)="toggleMode()" (keydown.enter)="toggleMode()" class="nexus-link" role="button" tabindex="0">Login here</a></p>
+          </footer>
+        </div>
+      }
+    </div>
+  </div>
+</div>

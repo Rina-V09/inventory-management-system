@@ -1,0 +1,69 @@
+.forecast-container {
+  padding: 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Custom Vertical Scrollbar for the Chart Tray */
+.chart-scroll-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chart-scroll-wrapper::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 3px;
+}
+
+.chart-scroll-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(0, 242, 254, 0.2);
+  border-radius: 3px;
+  transition: all 0.3s;
+}
+
+.chart-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+  box-shadow: 0 0 10px var(--primary-glow);
+}
+
+.toggle-btn {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--panel-border);
+  color: var(--text-muted);
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.toggle-btn.active {
+  background: var(--primary-gradient);
+  color: #000;
+  border-color: transparent;
+  box-shadow: 0 0 15px var(--primary-glow);
+  transform: scale(1.05);
+}
+
+.toggle-btn:hover:not(.active) {
+  background: rgba(255,255,255,0.08);
+  color: var(--text-main);
+  border-color: var(--primary);
+}
+
+.chart-panel {
+  transition: all 0.3s ease;
+}
+
+.chart-panel:hover {
+  border-color: var(--primary-glow);
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.4);
+}
