@@ -37,3 +37,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Local Spring overrides (may contain secrets) ###
+Backend/inventory-app/src/main/resources/application-local.properties
