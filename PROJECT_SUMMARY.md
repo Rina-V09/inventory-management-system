@@ -74,4 +74,3 @@ RetailNet is a modern, enterprise-grade Inventory Management System designed to 
     *   Performance optimization for large inventory datasets.
 
 ---
-*Prepared for technical presentation to the Lead Development Team.*
