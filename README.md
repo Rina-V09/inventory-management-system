@@ -63,7 +63,7 @@ Default local settings:
 Environment variables used by the backend:
 
 - `MYSQL_USER` defaults to `root`
-- `MYSQL_PASSWORD` defaults to `admin123`
+- `MYSQL_PASSWORD` defaults to `root`
 
 If you use different local credentials, set those environment variables before starting the backend.
 
